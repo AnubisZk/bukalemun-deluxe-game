@@ -1,0 +1,11 @@
+{
+  "name": "Bukalemun Tırmanışı Deluxe",
+  "short_name": "Bukalemun",
+  "lang": "tr",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#9ae6b4",
+  "theme_color": "#10b981",
+  "description": "Bukalemun Tırmanışı Deluxe - mobil ve masaüstü uyumlu web oyunu",
+  "icons": []
+}
