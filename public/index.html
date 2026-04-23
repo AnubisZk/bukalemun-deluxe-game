@@ -1491,3 +1491,145 @@ Powered by ZSKsolutions
   </script>
 </body>
 </html>
+<!-- === BUKAYLEMUN MENU UPGRADE START === -->
+<style>
+#heroMenuLogo{
+position:absolute;
+top:40px;
+left:50%;
+transform:translateX(-50%);
+width:190px;
+z-index:60;
+filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+animation:floatHero 3s ease-in-out infinite;
+}
+@keyframes floatHero{
+0%{transform:translateX(-50%) translateY(0)}
+50%{transform:translateX(-50%) translateY(-8px)}
+100%{transform:translateX(-50%) translateY(0)}
+}
+#infoBtn{
+margin-top:12px;
+}
+#gameInfoModal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+padding:20px;
+}
+#gameInfoCard{
+max-width:520px;
+width:100%;
+background:linear-gradient(180deg,#ffffff,#eafff2);
+border-radius:26px;
+padding:26px;
+box-shadow:0 25px 60px rgba(0,0,0,.35);
+font-family:Arial,sans-serif;
+color:#0f5132;
+line-height:1.55;
+}
+#gameInfoCard h2{
+margin:0 0 14px;
+font-size:34px;
+}
+#gameInfoCard h3{
+margin:14px 0 6px;
+font-size:18px;
+}
+#closeInfo{
+margin-top:18px;
+width:100%;
+padding:14px;
+border:none;
+border-radius:16px;
+background:#16a34a;
+color:#fff;
+font-weight:700;
+font-size:16px;
+cursor:pointer;
+}
+#creditLine{
+margin-top:16px;
+font-size:12px;
+opacity:.8;
+text-align:center;
+font-weight:700;
+}
+</style>
+
+<script>
+window.addEventListener('load',()=>{
+
+const panel=document.querySelector('#start-content');
+if(!panel) return;
+
+/* ikon */
+const hero=document.createElement('img');
+hero.id='heroMenuLogo';
+hero.src='chameleon.png';
+document.body.appendChild(hero);
+
+/* başlığı biraz aşağı al */
+const title=panel.querySelector('h1');
+if(title) title.style.marginTop='170px';
+
+/* bilgi butonu */
+const info=document.createElement('div');
+info.className='btn-soft';
+info.id='infoBtn';
+info.innerHTML='ℹ BİLGİ';
+panel.appendChild(info);
+
+/* credit */
+const c=document.createElement('div');
+c.id='creditLine';
+c.innerHTML='Designed by Ayzen KIVILCIM<br>Powered by ZSKsolutions';
+panel.appendChild(c);
+
+/* modal */
+const modal=document.createElement('div');
+modal.id='gameInfoModal';
+modal.innerHTML=`
+<div id="gameInfoCard">
+<h2>🦎 BukAYlemun</h2>
+
+<h3>📖 Hikaye</h3>
+BukAYlemun gizemli kulelere tırmanır, kristalleri toplar ve karanlık yaratıkları yenmeye çalışır.
+
+<h3>🎮 Kontroller</h3>
+PC: A/D veya sürükle hareket et.<br>
+Tıkla = dil fırlat.<br>
+Mobil: Sol joystick / sağ nişan.
+
+<h3>🌍 Bölümler</h3>
+Orman Vadisi<br>
+Kristal Mağara<br>
+Lav Diyarı<br>
+Gökyüzü Adaları
+
+<h3>👹 Boss Sistemi</h3>
+Her ana bölgede mini boss çıkar. Saldırılardan kaç ve diliyle vur.
+
+<h3>✨ Credits</h3>
+Designed by Ayzen KIVILCIM<br>
+Powered by ZSKsolutions
+
+<button id="closeInfo">KAPAT</button>
+</div>
+`;
+document.body.appendChild(modal);
+
+info.onclick=()=> modal.style.display='flex';
+modal.onclick=(e)=>{
+if(e.target.id==='gameInfoModal' || e.target.id==='closeInfo'){
+modal.style.display='none';
+}
+};
+
+});
+</script>
+<!-- === BUKAYLEMUN MENU UPGRADE END === -->
