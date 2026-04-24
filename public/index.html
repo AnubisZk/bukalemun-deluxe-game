@@ -219,6 +219,7 @@
       .stat-box { display: none; }
     }
 
+    /* DESKTOP: sag uste dikey */
     .top-actions {
       position: absolute;
       right: 12px;
@@ -239,6 +240,49 @@
       cursor: pointer;
       min-width: 84px;
       font-family: inherit;
+      font-size: 13px;
+    }
+    /* MOBIL: altta yatay bar */
+    #mobile-action-bar {
+      display: none;
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 35;
+      background: rgba(10,40,24,0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(16,185,129,0.25);
+      padding: 10px 16px;
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
+      justify-content: space-around;
+      align-items: center;
+      gap: 8px;
+    }
+    .mob-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.28);
+      border-radius: 14px;
+      padding: 8px 18px;
+      color: #6ee7b7;
+      font-weight: 800;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      flex: 1;
+      max-width: 100px;
+    }
+    .mob-btn .mob-icon { font-size: 20px; line-height: 1; }
+    .mob-btn:active { background: rgba(16,185,129,0.25); }
+    @media (max-width: 759px) {
+      .top-actions { display: none; }
+      #mobile-action-bar { display: flex; }
+      #mobile-joystick { bottom: 78px; }
+      #mobile-aim      { bottom: 78px; }
+      #tutorial-msg    { bottom: 172px; }
     }
 
     #tutorial-msg {
@@ -518,6 +562,19 @@
       <button class="mini-btn" id="shop-btn">🛒 Mağaza</button>
       <button class="mini-btn" id="leaderboard-btn">🏆 Skorlar</button>
       <button class="mini-btn" id="sound-btn">🔊 Ses</button>
+    </div>
+
+    <!-- MOBİL ALT BAR -->
+    <div id="mobile-action-bar">
+      <button class="mob-btn" id="mob-shop-btn">
+        <span class="mob-icon">🛒</span>Mağaza
+      </button>
+      <button class="mob-btn" id="mob-leaderboard-btn">
+        <span class="mob-icon">🏆</span>Skorlar
+      </button>
+      <button class="mob-btn" id="mob-sound-btn">
+        <span class="mob-icon">🔊</span>Ses
+      </button>
     </div>
 
     <div id="tutorial-msg" style="opacity:0;">Sol alanla yürü · Sağ alanla nişan al · PC: sürükle + tıkla</div>
@@ -1542,7 +1599,7 @@
     }
 
     function handlePointerDown(e) {
-      if (e.target.closest('.mini-btn') || e.target.closest('.btn-green') || e.target.closest('.btn-soft') || e.target.closest('.buy-btn')) return;
+      if (e.target.closest('.mini-btn') || e.target.closest('.btn-green') || e.target.closest('.btn-soft') || e.target.closest('.buy-btn') || e.target.closest('.mob-btn')) return;
       ensureAudio();
       updateMousePos(e);
       isMouseDown = true;
@@ -1636,11 +1693,20 @@
 
     document.getElementById('shop-btn').addEventListener('click', openShop);
     document.getElementById('leaderboard-btn').addEventListener('click', openLeaderboard);
-    document.getElementById('sound-btn').addEventListener('click', () => {
+    document.getElementById('sound-btn').addEventListener('click', toggleSound);
+
+    // Mobil alt bar butonlari
+    document.getElementById('mob-shop-btn').addEventListener('click', openShop);
+    document.getElementById('mob-leaderboard-btn').addEventListener('click', openLeaderboard);
+    document.getElementById('mob-sound-btn').addEventListener('click', toggleSound);
+
+    function toggleSound() {
       audioEnabled = !audioEnabled;
-      soundBtn.textContent = `${audioEnabled ? '🔊' : '🔇'} Ses`;
+      const icon = audioEnabled ? '🔊' : '🔇';
+      soundBtn.textContent = icon + ' Ses';
+      document.getElementById('mob-sound-btn').innerHTML = '<span class="mob-icon">' + icon + '</span>Ses';
       ensureAudio();
-    });
+    }
 
     // PWA install prompt
     let deferredPrompt = null;
