@@ -7,28 +7,188 @@
 
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#10b981" />
+  <meta name="description" content="Bukalemun Tırmanışı Deluxe — dil fırlatarak tırman, böcek topla, yüksel!" />
+  <meta property="og:title" content="Bukalemun Tırmanışı Deluxe" />
+  <meta property="og:description" content="Dil fırlatarak tırmanan bukalemun oyunu. Mobil ve masaüstü uyumlu." />
+  <meta property="og:image" content="./chameleon.png" />
+  <link rel="apple-touch-icon" href="./chameleon.png" />
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --panel: rgba(255,255,255,0.88);
       --panel-border: rgba(5, 150, 105, 0.8);
+      --game-w: 520px;
+      --sidebar-bg: #0d2d1a;
+      --accent: #10b981;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── PAGE SHELL ──────────────────────────────── */
+    html, body {
+      width: 100%; height: 100%;
       overflow: hidden;
-      background: #9ae6b4;
-      font-family: Inter, Segoe UI, Tahoma, sans-serif;
+      background: var(--sidebar-bg);
+      font-family: 'Nunito', system-ui, sans-serif;
       touch-action: none;
       user-select: none;
     }
+
+    /* ─── THREE-COLUMN LAYOUT ─────────────────────── */
+    #layout {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ─── SIDEBAR (desktop only) ──────────────────── */
+    .sidebar {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    @media (min-width: 760px) {
+      .sidebar { display: flex; }
+    }
+
+    /* animated forest background for sidebars */
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(16,185,129,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(34,197,94,0.10) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* decorative trees in sidebar */
+    .sidebar-trees {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 180px;
+      pointer-events: none;
+    }
+
+    .sidebar-logo {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .sidebar-logo img {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      border: 3px solid rgba(16,185,129,0.5);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      object-fit: cover;
+    }
+    .sidebar-logo .game-title {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #6ee7b7;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .sidebar-stats {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sidebar-stat {
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.22);
+      border-radius: 14px;
+      padding: 12px 16px;
+      color: #6ee7b7;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .sidebar-stat .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(110,231,183,0.55);
+      margin-bottom: 4px;
+    }
+    .sidebar-stat .value {
+      font-size: 20px;
+      font-weight: 900;
+      color: #34d399;
+    }
+
+    .sidebar-controls {
+      position: relative;
+      z-index: 2;
+      background: rgba(16,185,129,0.06);
+      border: 1px solid rgba(16,185,129,0.18);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: rgba(110,231,183,0.75);
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.7;
+      width: 100%;
+    }
+    .sidebar-controls .ctrl-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(110,231,183,0.45);
+      margin-bottom: 8px;
+    }
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .ctrl-key {
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 10px;
+      font-weight: 900;
+      color: #34d399;
+      white-space: nowrap;
+    }
+
+    /* ─── GAME COLUMN ─────────────────────────────── */
+    #game-col {
+      position: relative;
+      width: 100%;
+      max-width: var(--game-w);
+      flex-shrink: 0;
+      overflow: hidden;
+      border-left: 1px solid rgba(16,185,129,0.12);
+      border-right: 1px solid rgba(16,185,129,0.12);
+    }
+    @media (min-width: 760px) {
+      #game-col { width: var(--game-w); }
+    }
+
     canvas {
       display: block;
-      margin: 0 auto;
+      width: 100%;
+      height: 100%;
       background: linear-gradient(to bottom, #7dd3fc 0%, #cffafe 50%, #ecfccb 100%);
-      box-shadow: 0 0 30px rgba(0,0,0,0.20);
     }
+
+    /* ─── HUD (inside game col) ───────────────────── */
     .hud {
       position: absolute;
       top: 10px;
@@ -50,9 +210,15 @@
       border-radius: 999px;
       box-shadow: 0 8px 18px rgba(0,0,0,0.12);
       font-weight: 800;
-      font-size: 14px;
+      font-size: 13px;
       white-space: nowrap;
     }
+
+    /* hide HUD stat-boxes on desktop — sidebar shows them */
+    @media (min-width: 760px) {
+      .stat-box { display: none; }
+    }
+
     .top-actions {
       position: absolute;
       right: 12px;
@@ -72,7 +238,9 @@
       box-shadow: 0 8px 18px rgba(0,0,0,0.12);
       cursor: pointer;
       min-width: 84px;
+      font-family: inherit;
     }
+
     #tutorial-msg {
       position: absolute;
       bottom: 95px;
@@ -85,9 +253,13 @@
       padding: 12px 18px;
       transition: opacity 0.4s ease;
       pointer-events: none;
-      max-width: min(90vw, 440px);
+      max-width: min(90%, 440px);
       text-align: center;
+      font-size: 13px;
+      white-space: nowrap;
     }
+
+    /* ─── OVERLAY / PANELS ────────────────────────── */
     #screen-overlay, #shop-panel, #leaderboard-panel {
       position: absolute;
       inset: 0;
@@ -95,19 +267,48 @@
       align-items: center;
       justify-content: center;
       z-index: 100;
-      background: rgba(0,0,0,0.28);
+      background: rgba(0,0,0,0.32);
       padding: 16px;
     }
     .panel {
-      width: min(92vw, 420px);
-      max-height: 88vh;
+      width: min(92%, 400px);
+      max-height: 90vh;
       overflow: auto;
-      background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(236,253,245,0.95));
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(236,253,245,0.96));
       border-radius: 24px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
       padding: 24px;
       border: 2px solid rgba(16,185,129,0.25);
     }
+
+    /* ─── START SCREEN PANEL ──────────────────────── */
+    .start-logo-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .start-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      border: 3px solid rgba(16,185,129,0.4);
+      object-fit: cover;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .start-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #065f46;
+      line-height: 1.2;
+    }
+    .start-subtitle {
+      font-size: 11px;
+      font-weight: 700;
+      color: #10b981;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
     .btn-green, .btn-soft {
       display: inline-flex;
       align-items: center;
@@ -115,14 +316,36 @@
       width: 100%;
       border-radius: 999px;
       padding: 12px 18px;
-      font-weight: 800;
+      font-weight: 900;
+      font-family: inherit;
+      font-size: 14px;
       margin-top: 12px;
       cursor: pointer;
-      transition: transform .12s ease, opacity .12s ease;
+      transition: transform .12s ease, box-shadow .12s ease;
+      border: none;
+      letter-spacing: 0.04em;
     }
+    .btn-green:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,0.4); }
+    .btn-soft:hover { transform: translateY(-1px); }
     .btn-green:active, .btn-soft:active, .mini-btn:active { transform: scale(0.97); }
-    .btn-green { background: #10b981; color: white; }
+    .btn-green { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 4px 14px rgba(16,185,129,0.35); }
     .btn-soft { background: #d1fae5; color: #065f46; border: 2px solid rgba(5,150,105,0.35); }
+
+    /* biom badge on start screen */
+    .biom-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 12px 0 4px;
+    }
+    .biom-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+
     .shop-item {
       background: rgba(255,255,255,0.75);
       border: 2px solid rgba(16,185,129,0.18);
@@ -144,21 +367,21 @@
       border-radius: 999px;
       padding: 9px 14px;
       cursor: pointer;
+      font-family: inherit;
     }
-    .buy-btn:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
+    .buy-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+
     .controls-hint {
       font-size: 13px;
       color: #475569;
-      line-height: 1.45;
+      line-height: 1.5;
     }
+
+    /* ─── MOBILE JOYSTICK ─────────────────────────── */
     #mobile-joystick, #mobile-aim {
       position: absolute;
       bottom: 18px;
-      width: 130px;
-      height: 130px;
+      width: 130px; height: 130px;
       border-radius: 999px;
       z-index: 28;
       display: none;
@@ -177,90 +400,227 @@
       background: rgba(255,255,255,0.28);
       border: 2px solid rgba(255,255,255,0.55);
     }
-    @media (max-width: 768px) {
+    @media (max-width: 759px) {
       #mobile-joystick, #mobile-aim { display: block; }
-      .hud { width: min(100%, 520px); }
       .stat-box { font-size: 12px; padding: 7px 12px; }
     }
+
+    /* ─── BIOME INDICATOR (desktop sidebar live) ──── */
+    .biome-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.28);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #34d399;
+      letter-spacing: 0.04em;
+    }
+    .biome-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      animation: blink 1.6s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ─── DESKTOP INSTALL BTN ─────────────────────── */
+    .install-btn {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.32);
+      border-radius: 12px;
+      padding: 9px 14px;
+      color: #6ee7b7;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      font-family: inherit;
+      transition: background .18s;
+      position: relative;
+      z-index: 2;
+    }
+    .install-btn:hover { background: rgba(16,185,129,0.2); }
+    #install-btn-left.visible,
+    #install-btn-right.visible { display: flex; }
   </style>
 </head>
 <body>
-  <div class="hud">
-    <div class="stat-box" id="score-display">Yükseklik: 0m</div>
-    <div class="stat-box" id="coin-display">Böcek Coin: 0</div>
-    <div class="stat-box" id="tongue-display">Dil Boyu: 1.0x</div>
-  </div>
+<div id="layout">
 
-  <div class="top-actions">
-    <button class="mini-btn" id="shop-btn">Mağaza</button>
-    <button class="mini-btn" id="leaderboard-btn">Skorlar</button>
-    <button class="mini-btn" id="sound-btn">Ses: Açık</button>
-  </div>
+  <!-- ═══ LEFT SIDEBAR ═══════════════════════════════ -->
+  <aside class="sidebar" id="sidebar-left">
+    <!-- decorative SVG trees -->
+    <svg class="sidebar-trees" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="100,10 130,80 70,80" fill="rgba(16,185,129,0.18)"/>
+      <polygon points="100,35 125,90 75,90" fill="rgba(16,185,129,0.12)"/>
+      <rect x="95" y="90" width="10" height="30" fill="rgba(16,185,129,0.1)"/>
+      <polygon points="40,40 62,95 18,95" fill="rgba(34,197,94,0.12)"/>
+      <polygon points="40,60 58,100 22,100" fill="rgba(34,197,94,0.08)"/>
+      <rect x="36" y="100" width="8" height="24" fill="rgba(34,197,94,0.07)"/>
+      <polygon points="165,50 183,100 147,100" fill="rgba(16,185,129,0.10)"/>
+      <rect x="161" y="100" width="8" height="22" fill="rgba(16,185,129,0.07)"/>
+    </svg>
 
-  <div id="tutorial-msg" style="opacity:0;">Sol alanla yürü. Sağ alanla nişan alıp bırakınca dil fırlat. PC'de sürükleyerek yürü, tıklayarak ateş et.</div>
+    <div class="sidebar-logo">
+      <img src="./chameleon.png" alt="Bukalemun" onerror="this.style.display='none'" />
+      <div class="game-title">Bukalemun Tırmanışı</div>
+    </div>
 
-  <div id="screen-overlay" style="display:flex;">
-    <div class="panel">      
-<div id="start-content">
-<div style="text-align:center;"><img src="chameleon.png" style="width:180px;margin:10px auto;display:block;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));"></div>
-<div style="
-margin-top:18px;
-text-align:center;
-font-size:12px;
-color:rgba(255,255,255,0.75);
-letter-spacing:1px;
-line-height:1.6;
-font-weight:700;
-text-shadow:0 0 8px rgba(0,0,0,0.35);
-">
-Designed by Ayzen KIVILCIM<br>
-Powered by ZSKsolutions
-</div>
-        <h1 class="text-4xl font-black text-emerald-600">Bukalemun Tırmanışı Deluxe+</h1>
-        <p class="mt-3 text-slate-600">Yeni sürümde ana menü ekranı güçlendirildi, bölüm geçişlerine tematik arka planlar eklendi ve her ana bölgede mini boss savaşları aktif edildi.</p>
-        <div class="mt-3 rounded-2xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-800">
-          <strong>Yeni Özellikler:</strong> Orman ağaçları, kristal bölge dekorları, lav boss sahnesi, gökyüzü adaları ve boss can sistemi.
-        </div>
-        <div class="mt-4 controls-hint">
-          <strong>Kontroller</strong><br>
-          Bilgisayar: Sürükle / A-D ile yürü, tıkla ve dile hedef ver.<br>
-          Mobil: Sol başparmak hareket, sağ başparmak nişan.
-        </div>
-        <div class="btn-green" onclick="startGame()">OYUNA BAŞLA</div>
-        <div class="btn-soft" onclick="openShop()">MAĞAZAYI AÇ</div>
+    <div class="sidebar-stats">
+      <div class="sidebar-stat">
+        <div class="label">Yükseklik</div>
+        <div class="value" id="side-score">0m</div>
       </div>
-      <div id="game-over-content" style="display:none;">
-        <h2 class="text-3xl font-black text-rose-600">Aşağı Düştün!</h2>
-        <p class="text-lg mt-3" id="final-score">Skor: 0m</p>
-        <p class="text-slate-600" id="best-score-text">En iyi: 0m</p>
-        <div class="btn-green" onclick="resetGame()">TEKRAR DENE</div>
-        <div class="btn-soft" onclick="openLeaderboard()">SKORLARI GÖR</div>
+      <div class="sidebar-stat">
+        <div class="label">Böcek Coin</div>
+        <div class="value" id="side-coins">0</div>
+      </div>
+      <div class="sidebar-stat">
+        <div class="label">Dil Boyu</div>
+        <div class="value" id="side-tongue">1.0x</div>
+      </div>
+      <div class="biome-pill" id="side-biome">
+        <span class="biome-dot"></span>
+        Zümrüt Ormanı
       </div>
     </div>
-  </div>
 
-  <div id="shop-panel">
-    <div class="panel">
-      <h2 class="text-2xl font-black text-emerald-700">Yükseltme Mağazası</h2>
-      <p class="text-slate-600 mt-2">Topladığın böcek coinlerle kalıcı geliştirmeler satın al.</p>
-      <div class="mt-3 text-sm font-bold text-emerald-700" id="shop-coins">Coin: 0</div>
-      <div id="shop-items"></div>
-      <div class="btn-soft" onclick="closePanels()">KAPAT</div>
+    <div class="sidebar-controls">
+      <div class="ctrl-title">Kontroller</div>
+      <div class="ctrl-row"><span class="ctrl-key">A / D</span> Yürü</div>
+      <div class="ctrl-row"><span class="ctrl-key">Tıkla</span> Dil fırlat</div>
+      <div class="ctrl-row"><span class="ctrl-key">Sürükle</span> Hareket + nişan</div>
     </div>
-  </div>
 
-  <div id="leaderboard-panel">
-    <div class="panel">
-      <h2 class="text-2xl font-black text-emerald-700">Yerel Lider Tablosu</h2>
-      <div id="leaderboard-list" class="mt-4 text-slate-700"></div>
-      <div class="btn-soft" onclick="closePanels()">KAPAT</div>
+    <button class="install-btn" id="install-btn-left">⬇ Uygulamayı Kur</button>
+  </aside>
+
+  <!-- ═══ GAME COLUMN ══════════════════════════════════ -->
+  <div id="game-col">
+    <div class="hud">
+      <div class="stat-box" id="score-display">Yükseklik: 0m</div>
+      <div class="stat-box" id="coin-display">Böcek Coin: 0</div>
+      <div class="stat-box" id="tongue-display">Dil Boyu: 1.0x</div>
     </div>
-  </div>
 
-  <div id="mobile-joystick"><div class="stick" id="stick"></div></div>
-  <div id="mobile-aim"><div class="aim-dot" id="aim-dot"></div></div>
+    <div class="top-actions">
+      <button class="mini-btn" id="shop-btn">🛒 Mağaza</button>
+      <button class="mini-btn" id="leaderboard-btn">🏆 Skorlar</button>
+      <button class="mini-btn" id="sound-btn">🔊 Ses</button>
+    </div>
 
-  <canvas id="gameCanvas"></canvas>
+    <div id="tutorial-msg" style="opacity:0;">Sol alanla yürü · Sağ alanla nişan al · PC: sürükle + tıkla</div>
+
+    <!-- START / GAME OVER OVERLAY -->
+    <div id="screen-overlay" style="display:flex;">
+      <div class="panel">
+        <div id="start-content">
+          <div class="start-logo-row">
+            <img class="start-icon" src="./chameleon.png" alt="Bukalemun" onerror="this.style.display='none'" />
+            <div>
+              <div class="start-title">Bukalemun Tırmanışı</div>
+              <div class="start-subtitle">Deluxe Edition</div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:#475569;margin-bottom:8px;">Dil fırlatarak tırman, böcek coin topla, yüksel!</p>
+          <div class="biom-badges">
+            <span class="biom-badge" style="color:#059669;border-color:#059669;background:rgba(5,150,105,0.08)">🌿 Orman</span>
+            <span class="biom-badge" style="color:#6366f1;border-color:#6366f1;background:rgba(99,102,241,0.08)">💎 Kristal</span>
+            <span class="biom-badge" style="color:#ef4444;border-color:#ef4444;background:rgba(239,68,68,0.08)">🔥 Lav</span>
+            <span class="biom-badge" style="color:#8b5cf6;border-color:#8b5cf6;background:rgba(139,92,246,0.08)">🌌 Gökyüzü</span>
+          </div>
+          <div class="controls-hint" style="margin-top:10px;">
+            <strong>PC:</strong> Sürükle / A-D yürü · Tıkla dil fırlat<br>
+            <strong>Mobil:</strong> Sol: hareket · Sağ: nişan
+          </div>
+          <button class="btn-green" onclick="startGame()">▶ MACERAYA BAŞLA</button>
+          <button class="btn-soft" onclick="openShop()">🛒 MAĞAZAYI AÇ</button>
+        </div>
+        <div id="game-over-content" style="display:none;">
+          <h2 style="font-size:26px;font-weight:900;color:#e11d48;margin-bottom:8px;">💥 Aşağı Düştün!</h2>
+          <p style="font-size:18px;font-weight:800;color:#1e293b;margin-bottom:4px;" id="final-score">Skor: 0m</p>
+          <p style="color:#64748b;" id="best-score-text">En iyi: 0m</p>
+          <button class="btn-green" onclick="resetGame()">🔄 TEKRAR DENE</button>
+          <button class="btn-soft" onclick="openLeaderboard()">🏆 SKORLARI GÖR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHOP -->
+    <div id="shop-panel">
+      <div class="panel">
+        <h2 style="font-size:20px;font-weight:900;color:#065f46;">🛒 Yükseltme Mağazası</h2>
+        <p style="color:#64748b;font-size:13px;margin-top:6px;">Böcek coinlerle kalıcı geliştirmeler satın al.</p>
+        <div style="margin-top:10px;font-size:13px;font-weight:800;color:#059669;" id="shop-coins">Coin: 0</div>
+        <div id="shop-items"></div>
+        <button class="btn-soft" onclick="closePanels()">✕ KAPAT</button>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div id="leaderboard-panel">
+      <div class="panel">
+        <h2 style="font-size:20px;font-weight:900;color:#065f46;">🏆 Yerel Lider Tablosu</h2>
+        <div id="leaderboard-list" style="margin-top:14px;color:#334155;"></div>
+        <button class="btn-soft" onclick="closePanels()">✕ KAPAT</button>
+      </div>
+    </div>
+
+    <div id="mobile-joystick"><div class="stick" id="stick"></div></div>
+    <div id="mobile-aim"><div class="aim-dot" id="aim-dot"></div></div>
+
+    <canvas id="gameCanvas"></canvas>
+  </div><!-- end #game-col -->
+
+  <!-- ═══ RIGHT SIDEBAR ═════════════════════════════== -->
+  <aside class="sidebar" id="sidebar-right">
+    <svg class="sidebar-trees" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="100,10 130,80 70,80" fill="rgba(16,185,129,0.15)"/>
+      <polygon points="100,35 125,90 75,90" fill="rgba(16,185,129,0.10)"/>
+      <rect x="95" y="90" width="10" height="30" fill="rgba(16,185,129,0.08)"/>
+      <polygon points="35,55 55,105 15,105" fill="rgba(34,197,94,0.10)"/>
+      <rect x="31" y="105" width="8" height="20" fill="rgba(34,197,94,0.06)"/>
+      <polygon points="170,35 190,90 150,90" fill="rgba(16,185,129,0.12)"/>
+      <rect x="166" y="90" width="8" height="26" fill="rgba(16,185,129,0.08)"/>
+    </svg>
+
+    <div class="sidebar-logo">
+      <div class="game-title" style="font-size:11px;color:rgba(110,231,183,0.5);">ZSK Solutions</div>
+      <div style="font-size:18px;font-weight:900;color:#34d399;margin-top:4px;">DELUXE</div>
+    </div>
+
+    <div class="sidebar-stats">
+      <div class="sidebar-stat">
+        <div class="label">En İyi Skor</div>
+        <div class="value" id="side-best">0m</div>
+      </div>
+      <div class="sidebar-stat">
+        <div class="label">Aktif Biyom</div>
+        <div class="value" id="side-biome2" style="font-size:14px;">🌿 Zümrüt Ormanı</div>
+      </div>
+    </div>
+
+    <!-- upgrade quick-view -->
+    <div class="sidebar-controls" id="side-upgrades">
+      <div class="ctrl-title">Yükseltmeler</div>
+      <div id="side-upg-list" style="display:flex;flex-direction:column;gap:6px;margin-top:6px;"></div>
+    </div>
+
+    <button class="install-btn" id="install-btn-right">⬇ Uygulamayı Kur</button>
+  </aside>
+
+</div><!-- end #layout -->
 
   <script>
     const canvas = document.getElementById('gameCanvas');
@@ -309,9 +669,6 @@ Powered by ZSKsolutions
     let touchMoveDir = 0;
     let mobileAim = { active: false, x: 0, y: 0 };
     let pointerTypeMap = new Map();
-    let boss = null;
-    let bossProjectiles = [];
-    let bossMilestonesDefeated = new Set();
 
     const GRAVITY = 0.42;
     const TONGUE_SPEED = 27;
@@ -367,8 +724,9 @@ Powered by ZSKsolutions
     }
 
     function resizeCanvas() {
-      width = Math.min(window.innerWidth, 520);
-      height = window.innerHeight;
+      const col = document.getElementById('game-col');
+      width = col.clientWidth;
+      height = col.clientHeight || window.innerHeight;
       canvas.style.width = width + 'px';
       canvas.style.height = height + 'px';
       canvas.width = Math.floor(width * dpr);
@@ -421,9 +779,6 @@ Powered by ZSKsolutions
       floatingTexts = [];
       platforms = [];
       foods = [];
-      boss = null;
-      bossProjectiles = [];
-      bossMilestonesDefeated = new Set();
 
       player = {
         x: width / 2,
@@ -463,6 +818,37 @@ Powered by ZSKsolutions
       scoreEl.innerText = `Yükseklik: ${maxScore}m`;
       coinEl.innerText = `Böcek Coin: ${saveData.coins}`;
       tongueEl.innerText = `Dil Boyu: ${player.tongueLength.toFixed(1)}x`;
+      // sidebar
+      const ss = document.getElementById('side-score');
+      const sc = document.getElementById('side-coins');
+      const st = document.getElementById('side-tongue');
+      const sb = document.getElementById('side-best');
+      const sbm = document.getElementById('side-biome');
+      const sbm2 = document.getElementById('side-biome2');
+      if (ss) ss.textContent = maxScore + 'm';
+      if (sc) sc.textContent = saveData.coins;
+      if (st) st.textContent = player.tongueLength.toFixed(1) + 'x';
+      if (sb) sb.textContent = Math.max(saveData.bestScore, maxScore) + 'm';
+      const biomeLabels = { forest: '🌿 Zümrüt Ormanı', crystal: '💎 Kristal Mağara', lava: '🔥 Lav Vadisi', sky: '🌌 Gökyüzü Adaları' };
+      const bl = biomeLabels[currentBiome] || currentBiome;
+      if (sbm) sbm.innerHTML = `<span class="biome-dot"></span>${bl}`;
+      if (sbm2) sbm2.textContent = bl;
+      updateSideUpgrades();
+    }
+
+    function updateSideUpgrades() {
+      const el = document.getElementById('side-upg-list');
+      if (!el) return;
+      el.innerHTML = upgrades.map(u => {
+        const lv = getUpgradeValue(u.id);
+        const bars = Array.from({length: u.max}, (_, i) =>
+          `<span style="display:inline-block;width:10px;height:6px;border-radius:2px;margin-right:2px;background:${i < lv ? '#34d399' : 'rgba(52,211,153,0.18)'}"></span>`
+        ).join('');
+        return `<div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:11px;color:rgba(110,231,183,0.7)">${u.title}</span>
+          <span>${bars}</span>
+        </div>`;
+      }).join('');
     }
 
     function openShop() {
@@ -718,216 +1104,6 @@ Powered by ZSKsolutions
       return false;
     }
 
-    function getBossMilestoneForBiome(index) {
-      return [280, 680, 1180, 1600][index] || null;
-    }
-
-    function ensureBossArena(levelY) {
-      const arena = [
-        { x: 30, y: levelY + 140, w: 120 },
-        { x: width / 2 - 60, y: levelY + 70, w: 120 },
-        { x: width - 150, y: levelY + 140, w: 120 },
-      ];
-      arena.forEach(a => {
-        const exists = platforms.some(p => Math.abs(p.x - a.x) < 8 && Math.abs(p.y - a.y) < 8);
-        if (!exists) platforms.push({ x: a.x, y: a.y, w: a.w, h: 22, type: 'boss', vx: 0, broken: false, breakTimer: 0, bounce: 0 });
-      });
-    }
-
-    function maybeSpawnBoss() {
-      const milestone = getBossMilestoneForBiome(biomeIndex);
-      if (!milestone || boss || bossMilestonesDefeated.has(milestone) || maxScore < milestone) return;
-      const bossY = cameraY + 150;
-      boss = {
-        milestone,
-        biomeIndex,
-        x: width / 2,
-        y: bossY,
-        baseY: bossY,
-        vx: 2.2 + biomeIndex * 0.35,
-        radius: 34 + biomeIndex * 4,
-        hp: 5 + biomeIndex * 2,
-        maxHp: 5 + biomeIndex * 2,
-        cooldown: 90,
-        phase: Math.random() * Math.PI * 2,
-        hitFlash: 0
-      };
-      ensureBossArena(bossY);
-      addFloatingText(width / 2, bossY - 70, 'BOSS GELDİ!', '#fca5a5');
-      spawnParticles(width / 2, bossY, 30, 'rgba(248,113,113,0.85)', 1.5, 6);
-    }
-
-    function updateBoss(dt) {
-      if (!boss) return;
-      boss.phase += dt * 0.02;
-      boss.x += boss.vx * dt * 0.06;
-      boss.y = boss.baseY + Math.sin(boss.phase) * 16;
-      if (boss.x < boss.radius + 16 || boss.x > width - boss.radius - 16) boss.vx *= -1;
-      boss.hitFlash *= 0.86;
-      boss.cooldown -= dt * 0.06;
-      if (boss.cooldown <= 0) {
-        bossProjectiles.push({
-          x: boss.x,
-          y: boss.y + 18,
-          vx: (Math.random() - 0.5) * 2.8,
-          vy: 3.5 + biomeIndex * 0.7,
-          radius: 10 + biomeIndex,
-          life: 180
-        });
-        boss.cooldown = Math.max(34, 85 - biomeIndex * 10);
-      }
-
-      bossProjectiles = bossProjectiles.filter(pr => pr.life > 0 && pr.y < cameraY + height + 120);
-      bossProjectiles.forEach(pr => {
-        pr.life -= dt * 0.06;
-        pr.x += pr.vx * dt * 0.06;
-        pr.y += pr.vy * dt * 0.06;
-        if (Math.hypot(pr.x - player.x, pr.y - player.y) < player.radius + pr.radius) {
-          pr.life = 0;
-          player.vy += 6;
-          player.vx += (player.x < pr.x ? -3 : 3);
-          player.isGrounded = false;
-          cameraShake = 10;
-          spawnParticles(pr.x, pr.y, 14, 'rgba(251,146,60,0.9)', 1.2, 5);
-          addFloatingText(player.x, player.y - 20, 'ÇARPILDIN!', '#fdba74');
-        }
-      });
-
-      if (boss.hp <= 0) {
-        bossMilestonesDefeated.add(boss.milestone);
-        saveData.coins += 10 + biomeIndex * 4;
-        spawnParticles(boss.x, boss.y, 45, 'rgba(250,204,21,0.95)', 1.8, 7);
-        addFloatingText(boss.x, boss.y - 30, 'BOSS YENİLDİ!', '#fde047');
-        updateHud();
-        boss = null;
-      }
-    }
-
-    function damageBossAt(x, y) {
-      if (!boss) return false;
-      if (Math.hypot(x - boss.x, y - boss.y) <= boss.radius + 14) {
-        boss.hp -= 1;
-        boss.hitFlash = 1;
-        boss.vx *= -1;
-        spawnParticles(x, y, 18, 'rgba(244,114,182,0.85)', 1.0, 4);
-        addFloatingText(boss.x, boss.y - boss.radius - 16, '-1', '#fda4af');
-        playSound('stick');
-        return true;
-      }
-      return false;
-    }
-
-    function drawBoss() {
-      if (!boss) return;
-      ctx.save();
-      ctx.translate(boss.x, boss.y);
-      const flash = boss.hitFlash > 0.1;
-      ctx.fillStyle = flash ? '#fecaca' : (biomeIndex === 2 ? '#7f1d1d' : biomeIndex === 1 ? '#312e81' : '#14532d');
-      ctx.beginPath();
-      ctx.arc(0, 0, boss.radius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.18)';
-      ctx.beginPath();
-      ctx.arc(-10, -10, boss.radius * 0.45, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#fff';
-      ctx.beginPath(); ctx.arc(-12, -6, 8, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(12, -6, 8, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#111827';
-      ctx.beginPath(); ctx.arc(-12, -6, 3, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(12, -6, 3, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#fca5a5';
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.arc(0, 10, 12, 0.1 * Math.PI, 0.9 * Math.PI);
-      ctx.stroke();
-      ctx.restore();
-
-      bossProjectiles.forEach(pr => {
-        ctx.fillStyle = biomeIndex === 2 ? '#fb923c' : '#f87171';
-        ctx.beginPath();
-        ctx.arc(pr.x, pr.y, pr.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    }
-
-    function drawBossHud() {
-      if (!boss) return;
-      const barW = Math.min(width - 40, 280);
-      const x = (width - barW) / 2;
-      const y = 66;
-      ctx.save();
-      ctx.fillStyle = 'rgba(0,0,0,0.35)';
-      ctx.fillRect(x, y, barW, 16);
-      ctx.fillStyle = '#ef4444';
-      ctx.fillRect(x, y, barW * Math.max(0, boss.hp / boss.maxHp), 16);
-      ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-      ctx.strokeRect(x, y, barW, 16);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 13px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('BOSS CANI', width / 2, y - 6);
-      ctx.restore();
-    }
-
-    function drawBiomeDetails() {
-      const time = performance.now() * 0.001;
-      if (biomeIndex === 0) {
-        for (let i = 0; i < 6; i++) {
-          const x = i * 95 + ((cameraY * 0.08) % 95) - 20;
-          const y = height - 95 + Math.sin(time + i) * 3;
-          ctx.fillStyle = 'rgba(20,83,45,0.32)';
-          ctx.fillRect(x + 16, y, 10, 40);
-          ctx.beginPath();
-          ctx.arc(x + 20, y - 5, 26, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(x + 4, y + 3, 18, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(x + 34, y + 6, 18, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      } else if (biomeIndex === 1) {
-        for (let i = 0; i < 7; i++) {
-          const x = i * 78 + 10;
-          const y = height - 70 - (i % 2) * 12;
-          ctx.fillStyle = 'rgba(255,255,255,0.18)';
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.lineTo(x + 16, y - 46);
-          ctx.lineTo(x + 30, y);
-          ctx.closePath();
-          ctx.fill();
-        }
-      } else if (biomeIndex === 2) {
-        for (let i = 0; i < 5; i++) {
-          const x = i * 110 + 18;
-          const h = 36 + (i % 3) * 20;
-          ctx.fillStyle = 'rgba(127,29,29,0.35)';
-          ctx.fillRect(x, height - h, 30, h);
-          ctx.fillStyle = 'rgba(251,146,60,0.25)';
-          ctx.beginPath();
-          ctx.moveTo(x + 15, height - h - 25);
-          ctx.lineTo(x + 4, height - h + 6);
-          ctx.lineTo(x + 26, height - h + 6);
-          ctx.closePath();
-          ctx.fill();
-        }
-      } else if (biomeIndex >= 3) {
-        for (let i = 0; i < 4; i++) {
-          const x = i * 120 + 30 + Math.sin(time + i) * 8;
-          const y = 120 + (i % 2) * 38;
-          ctx.fillStyle = 'rgba(255,255,255,0.16)';
-          ctx.beginPath();
-          ctx.ellipse(x, y, 42, 14, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = 'rgba(129,140,248,0.22)';
-          ctx.fillRect(x - 30, y, 60, 12);
-        }
-      }
-    }
-
     function updatePlatforms(dt) {
       platforms.forEach(p => {
         if (p.type === 'moving' && !p.broken) {
@@ -958,8 +1134,6 @@ Powered by ZSKsolutions
         addFloatingText(player.x, player.y - 40, BIOMES[biomeIndex].label, '#ffffff');
         spawnParticles(player.x, player.y, 24, 'rgba(255,255,255,0.85)', 1.2, 5);
       }
-
-      maybeSpawnBoss();
 
       let moveDir = 0;
       if (keys['ArrowLeft'] || keys['KeyA']) moveDir = -1;
@@ -1024,12 +1198,8 @@ Powered by ZSKsolutions
         const currentDist = Math.hypot(player.tongueX - mouthX, player.tongueY - mouthY);
         if (currentDist > player.tongueLength * UNIT_SIZE) player.tongueState = 'idle';
 
-        if (damageBossAt(player.tongueX, player.tongueY)) {
-          player.tongueState = 'idle';
-        }
-
         for (let p of platforms) {
-          if (p.broken || player.tongueState === 'idle') continue;
+          if (p.broken) continue;
           if (player.tongueX > p.x && player.tongueX < p.x + p.w && player.tongueY > p.y && player.tongueY < p.y + p.h) {
             player.tongueState = 'pulling';
             player.attachedPlatform = p;
@@ -1091,7 +1261,6 @@ Powered by ZSKsolutions
       foods = foods.filter(f => !f.eaten && f.y < cameraY + height + 220);
       foods.forEach(f => { f.angle += 0.15 * dt * 0.06; });
       updatePlatforms(dt);
-      updateBoss(dt);
       updateParticles(dt);
 
       if (player.y - cameraY > height + 240) {
@@ -1156,7 +1325,6 @@ Powered by ZSKsolutions
 
       mountainLayer(cameraY * 0.12, biome.mount, 0.73);
       mountainLayer(cameraY * 0.24 + 120, 'rgba(0,0,0,0.12)', 0.84);
-      drawBiomeDetails();
 
       leaves.forEach(l => {
         l.y += l.speed;
@@ -1192,7 +1360,6 @@ Powered by ZSKsolutions
       if (p.type === 'moving') { top = '#14b8a6'; bottom = '#0f766e'; }
       if (p.type === 'breaking') { top = '#a78bfa'; bottom = '#7c3aed'; }
       if (p.type === 'bounce') { top = '#60a5fa'; bottom = '#2563eb'; }
-      if (p.type === 'boss') { top = '#f59e0b'; bottom = '#b45309'; }
       ctx.fillStyle = top;
       ctx.beginPath();
       ctx.roundRect(p.x, p.y + Math.sin(performance.now() * 0.004 + p.x) * (p.type === 'moving' ? 2 : 0), p.w, p.h, 8);
@@ -1352,7 +1519,6 @@ Powered by ZSKsolutions
 
       platforms.forEach(drawPlatform);
       foods.forEach(f => !f.eaten && drawBug(f));
-      drawBoss();
       player.trail.forEach((t, i) => {
         ctx.globalAlpha = (t.life / 12) * 0.22;
         ctx.fillStyle = '#34d399';
@@ -1365,7 +1531,6 @@ Powered by ZSKsolutions
       drawBukalemun(player.x, player.y, player.colorHue, player.direction, player.legPhase);
       drawParticles();
       ctx.restore();
-      drawBossHud();
 
       update(dt);
       requestAnimationFrame(draw);
@@ -1473,8 +1638,27 @@ Powered by ZSKsolutions
     document.getElementById('leaderboard-btn').addEventListener('click', openLeaderboard);
     document.getElementById('sound-btn').addEventListener('click', () => {
       audioEnabled = !audioEnabled;
-      soundBtn.textContent = `Ses: ${audioEnabled ? 'Açık' : 'Kapalı'}`;
+      soundBtn.textContent = `${audioEnabled ? '🔊' : '🔇'} Ses`;
       ensureAudio();
+    });
+
+    // PWA install prompt
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.querySelectorAll('.install-btn').forEach(b => b.classList.add('visible'));
+    });
+    document.querySelectorAll('.install-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          document.querySelectorAll('.install-btn').forEach(b => b.classList.remove('visible'));
+        }
+        deferredPrompt = null;
+      });
     });
 
     init();
@@ -1492,145 +1676,3 @@ Powered by ZSKsolutions
   </script>
 </body>
 </html>
-<!-- === BUKAYLEMUN MENU UPGRADE START === -->
-<style>
-#heroMenuLogo{
-position:absolute;
-top:40px;
-left:50%;
-transform:translateX(-50%);
-width:190px;
-z-index:60;
-filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
-animation:floatHero 3s ease-in-out infinite;
-}
-@keyframes floatHero{
-0%{transform:translateX(-50%) translateY(0)}
-50%{transform:translateX(-50%) translateY(-8px)}
-100%{transform:translateX(-50%) translateY(0)}
-}
-#infoBtn{
-margin-top:12px;
-}
-#gameInfoModal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.55);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999;
-padding:20px;
-}
-#gameInfoCard{
-max-width:520px;
-width:100%;
-background:linear-gradient(180deg,#ffffff,#eafff2);
-border-radius:26px;
-padding:26px;
-box-shadow:0 25px 60px rgba(0,0,0,.35);
-font-family:Arial,sans-serif;
-color:#0f5132;
-line-height:1.55;
-}
-#gameInfoCard h2{
-margin:0 0 14px;
-font-size:34px;
-}
-#gameInfoCard h3{
-margin:14px 0 6px;
-font-size:18px;
-}
-#closeInfo{
-margin-top:18px;
-width:100%;
-padding:14px;
-border:none;
-border-radius:16px;
-background:#16a34a;
-color:#fff;
-font-weight:700;
-font-size:16px;
-cursor:pointer;
-}
-#creditLine{
-margin-top:16px;
-font-size:12px;
-opacity:.8;
-text-align:center;
-font-weight:700;
-}
-</style>
-
-<script>
-window.addEventListener('load',()=>{
-
-const panel=document.querySelector('#start-content');
-if(!panel) return;
-
-/* ikon */
-const hero=document.createElement('img');
-hero.id='heroMenuLogo';
-hero.src='chameleon.png';
-document.body.appendChild(hero);
-
-/* başlığı biraz aşağı al */
-const title=panel.querySelector('h1');
-if(title) title.style.marginTop='170px';
-
-/* bilgi butonu */
-const info=document.createElement('div');
-info.className='btn-soft';
-info.id='infoBtn';
-info.innerHTML='ℹ BİLGİ';
-panel.appendChild(info);
-
-/* credit */
-const c=document.createElement('div');
-c.id='creditLine';
-c.innerHTML='Designed by Ayzen KIVILCIM<br>Powered by ZSKsolutions';
-panel.appendChild(c);
-
-/* modal */
-const modal=document.createElement('div');
-modal.id='gameInfoModal';
-modal.innerHTML=`
-<div id="gameInfoCard">
-<h2>🦎 BukAYlemun</h2>
-
-<h3>📖 Hikaye</h3>
-BukAYlemun gizemli kulelere tırmanır, kristalleri toplar ve karanlık yaratıkları yenmeye çalışır.
-
-<h3>🎮 Kontroller</h3>
-PC: A/D veya sürükle hareket et.<br>
-Tıkla = dil fırlat.<br>
-Mobil: Sol joystick / sağ nişan.
-
-<h3>🌍 Bölümler</h3>
-Orman Vadisi<br>
-Kristal Mağara<br>
-Lav Diyarı<br>
-Gökyüzü Adaları
-
-<h3>👹 Boss Sistemi</h3>
-Her ana bölgede mini boss çıkar. Saldırılardan kaç ve diliyle vur.
-
-<h3>✨ Credits</h3>
-Designed by Ayzen KIVILCIM<br>
-Powered by ZSKsolutions
-
-<button id="closeInfo">KAPAT</button>
-</div>
-`;
-document.body.appendChild(modal);
-
-info.onclick=()=> modal.style.display='flex';
-modal.onclick=(e)=>{
-if(e.target.id==='gameInfoModal' || e.target.id==='closeInfo'){
-modal.style.display='none';
-}
-};
-
-});
-</script>
-<!-- === BUKAYLEMUN MENU UPGRADE END === -->

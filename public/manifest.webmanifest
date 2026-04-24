@@ -4,8 +4,24 @@
   "lang": "tr",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#9ae6b4",
+  "orientation": "portrait-primary",
+  "background_color": "#0d2d1a",
   "theme_color": "#10b981",
-  "description": "Bukalemun Tırmanışı Deluxe - mobil ve masaüstü uyumlu web oyunu",
-  "icons": []
+  "description": "Dil fırlatarak tırmanan bukalemun oyunu. Böcek coin topla, yüksel!",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "./chameleon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./chameleon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "prefer_related_applications": false
 }
